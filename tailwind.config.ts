@@ -10,9 +10,14 @@ export default {
     extend: {
       colors: {
         background: "var(--background)",
-        foreground: "var(--foreground)",
+        bright: "#f2eded"
       },
     },
+    fontFamily: {
+      'serif': ['Times New Roman', 'Times', 'ui-serif', 'Georgia', 'Cambria', 'serif']
+    }
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 } satisfies Config;

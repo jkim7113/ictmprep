@@ -25,7 +25,7 @@ const page = (props: Props) => {
               <section className='dashboard-section'>
                 <span className='bg-gradient-to-r from-orange-600 via-orange-700 to-red-600 bg-clip-text text-transparent'>{daysLeft}</span> days left until regionals
               </section>
-              <section className='dashboard-section !py-2 lg:w-1/2 flex justify-between gap-6'>
+              <section className='dashboard-section !py-2 lg:w-1/2 flex justify-between gap-3'>
                 <Dropdown options={options} />
                 <button title="Random Question" className="px-2 py-1.5 my-auto border rounded-md transition border-gray-400 hover:bg-gray-400">🎲</button>
               </section>

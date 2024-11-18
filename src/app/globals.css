@@ -14,6 +14,10 @@
   text-shadow: 2px 3px 0px #898999;
 }
 
+math-field::part(menu-toggle) {
+  display: none;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #f2eded;

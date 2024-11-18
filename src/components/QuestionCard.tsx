@@ -1,10 +1,12 @@
 "use client"
 
-import React, { FormEvent, useRef } from 'react'
+import React, { FormEvent, useState, useEffect } from 'react'
 
 import Latex from 'react-latex-next';
 import 'katex/dist/katex.min.css'
-import MathInput from 'react-math-keyboard';
+import * as Mathlive from 'mathlive'
+import Mathfield from './Mathfield';
+import { grade } from '@/utils/grade';
 
 export type QuestionData = {
   question: string
@@ -27,21 +29,35 @@ const delimiterOptions = [
   { left: '\\[', right: '\\]', display: true },
 ]
 
-function Card({ className, data: { question, year, tag, subject, image } }: Props) {
-  const inputRef = useRef<HTMLFormElement>(null)
+function Card({ className, data: { question, year, tag, subject, answers, image } }: Props) {
+  const [ isClient, setIsClient ] = useState(false)
+  const [ response, setResponse ] = useState("")
+
+  useEffect(() => {
+    setIsClient(true)
+    Mathlive.MathfieldElement.locale = 'en';
+    Mathlive.MathfieldElement.decimalSeparator = ',';
+    Mathlive.MathfieldElement.keypressSound = 'none';
+    Mathlive.MathfieldElement.plonkSound = 'none';
+  }, [])
+
   function handleSubmit(e: FormEvent){
     e.preventDefault()
-
+    const responses = response.split("{,}").map(response => response.replace("$\\:$", ""))
+    const isCorrect = grade(responses, answers)
+    console.log(isCorrect)
   }
 
   return (
-    <div className={`${className} lg:w-[768px] rounded-lg min-h-80 p-6 drop-shadow-lg bg-bright`}>
+    <div className={`${className} relative lg:w-[768px] rounded-lg p-6 drop-shadow-lg bg-bright`}>
       <header className='text-lg font-semibold drop-shadow-md'>{year} ICTM {subject} ({tag})</header>
-      <p className='text-lg font-serif mt-2 pb-18'>
+      <p className='text-lg font-serif mt-2 pb-18 min-h-44 mb-4'>
         <Latex delimiters={delimiterOptions}>{question}</Latex>
       </p>
-      <form className='absolute left-0 bottom-6 w-full px-6 flex flex-wrap gap-3 justify-between' onSubmit={handleSubmit} >
-        <input className="outline-none p-3 w-full md:w-2/3 rounded-md" type="text" placeholder="Please separate your answers with commas."></input>
+      <form className='w-full flex flex-wrap gap-3 justify-between' onSubmit={handleSubmit} >
+        {
+          isClient ? <Mathfield value={response} onChange={setResponse} className="outline-none px-2 w-full md:w-2/3 rounded-md"></Mathfield> : ''
+        }
         <button type='submit' className='py-3 px-4 bg-blue-600 text-bright rounded-md'>Submit</button>
       </form>
     </div>

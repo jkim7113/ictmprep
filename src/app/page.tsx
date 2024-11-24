@@ -23,7 +23,7 @@ export default async function Home() {
           <p>Problem of the Day 🔥</p>
         </header>
         <p className="text-md text-gray-500 mt-2"><span className="font-semibold">{now}</span> · Solve at least one problem per day to keep your streak alive.</p>
-        <QuestionCard className="mt-4" data={json[0]} />
+        <QuestionCard className="mt-4 drop-shadow-lg" data={json[0]} />
       </section>
     </div>
     </>

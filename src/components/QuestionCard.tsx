@@ -13,13 +13,15 @@ export type QuestionData = {
   year?: number
   tag?: string
   subject: string
+  number?: number
   image?: string
   answers: string[]
 }
 
 type Props = {
   data: QuestionData
-  className: string
+  className?: string
+  showNumberOnly?: Boolean
 }
 
 const delimiterOptions = [
@@ -29,7 +31,7 @@ const delimiterOptions = [
   { left: '\\[', right: '\\]', display: true },
 ]
 
-function Card({ className, data: { question, year, tag, subject, answers, image } }: Props) {
+function Card({ className = "", showNumberOnly, data: { question, year, tag = "others", subject, answers, number, image } }: Props) {
   const [ isClient, setIsClient ] = useState(false)
   const [ response, setResponse ] = useState("")
 
@@ -43,20 +45,22 @@ function Card({ className, data: { question, year, tag, subject, answers, image 
 
   function handleSubmit(e: FormEvent){
     e.preventDefault()
-    const responses = response.split("{,}").map(response => response.replace("$\\:$", ""))
+    const responses = response.split("{,}").map(response => response.replaceAll("\\:", ""))
     const isCorrect = grade(responses, answers)
-    console.log(isCorrect)
+    console.log(responses, answers, isCorrect)
   }
 
   return (
-    <div className={`${className} relative lg:w-[768px] rounded-lg p-6 drop-shadow-lg bg-bright`}>
-      <header className='text-lg font-semibold drop-shadow-md'>{year} ICTM {subject} ({tag})</header>
+    <div className={`${className} lg:w-[768px] rounded-lg p-6 bg-bright`}>
+      <header className='text-lg font-semibold'>
+        {!showNumberOnly ? `${year} ICTM` : ''} {!showNumberOnly ? subject : ''} #{number} {!showNumberOnly ? `(${tag})` : ''}
+      </header>
       <p className='text-lg font-serif mt-2 pb-18 min-h-44 mb-4'>
         <Latex delimiters={delimiterOptions}>{question}</Latex>
       </p>
-      <form className='w-full flex flex-wrap gap-3 justify-between' onSubmit={handleSubmit} >
+      <form className='w-full flex flex-wrap gap-3 justify-end' onSubmit={handleSubmit} >
         {
-          isClient ? <Mathfield value={response} onChange={setResponse} className="outline-none px-2 w-full md:w-2/3 rounded-md"></Mathfield> : ''
+          isClient ? <Mathfield value={response} onChange={setResponse} className="outline-none px-2 w-full md:w-1/2 rounded-md"></Mathfield> : ''
         }
         <button type='submit' className='py-3 px-4 bg-blue-600 text-bright rounded-md'>Submit</button>
       </form>

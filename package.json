@@ -15,7 +15,6 @@
     "@tailwindcss/typography": "^0.5.15",
     "@types/mdx": "^2.0.13",
     "dayjs": "^1.11.13",
-    "math-expressions": "^2.0.0-alpha71",
     "mathlive": "^0.101.2",
     "mongoose": "^8.8.1",
     "next": "15.0.3",

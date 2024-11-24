@@ -13,6 +13,10 @@ const QuestionSchema = new Schema({
         type: [String],
         required: [true, 'Answers are required!'],
     },
+    number: {
+        type: Number,
+        required: false,
+    },
     year: {
         type: Number,
         required: false,
